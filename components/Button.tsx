@@ -4,36 +4,49 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 type ButtonProps = {
   text: string;
-  backgroundColor?: string; // properti opsional untuk menentukan background
+  backgroundColor?: string;
+  borderColor?: string;
 } & React.ComponentPropsWithoutRef<typeof TouchableOpacity>;
 
 const Button = forwardRef<
   React.ElementRef<typeof TouchableOpacity>,
   ButtonProps
->(({ text, backgroundColor = "blue", style, ...props }, ref) => {
-  return (
-    <TouchableOpacity
-      ref={ref}
-      activeOpacity={0.7} // efek opacity saat tombol ditekan
-      {...props}
-      style={[styles.container, { backgroundColor }, style]}
-    >
-      <Text style={styles.text}>{text}</Text>
-    </TouchableOpacity>
-  );
-});
+>(
+  (
+    {
+      text,
+      backgroundColor = "white",
+      borderColor = "#59a3c9",
+      style,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <TouchableOpacity
+        ref={ref}
+        activeOpacity={0.7}
+        {...props}
+        style={[styles.container, { backgroundColor, borderColor }, style]}
+      >
+        <Text style={styles.text}>{text}</Text>
+      </TouchableOpacity>
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
+    padding: 5,
     alignItems: "center",
-    borderRadius: 100,
+    borderRadius: 15,
     marginVertical: 10,
+    borderWidth: 1,
   },
   text: {
     fontSize: 16,
     fontWeight: "600",
-    color: "white",
+    color: "#59a3c9",
   },
 });
 

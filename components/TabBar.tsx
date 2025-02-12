@@ -12,7 +12,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({
   navigation,
 }) => {
   const { buildHref } = useLinkBuilder();
-  const primaryColor = "#0891b2";
+  const primaryColor = "#97d2f0";
   const greyColor = "#737373";
 
   const icons: Record<string, (props: { color: string }) => JSX.Element> = {
@@ -21,13 +21,20 @@ const TabBar: React.FC<BottomTabBarProps> = ({
     ticket: (props) => <Entypo name="ticket" size={26} {...props} />,
   };
 
+  const customLabels: Record<string, string> = {
+    index: "Home",
+    profile: "Profile",
+    ticket: "Ticket",
+  };
+
   return (
     <View style={styles.tabbar}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;
 
-        let label: string = route.name;
+        let label: string = customLabels[route.name] || route.name;
+
         if (typeof options.tabBarLabel === "string") {
           label = options.tabBarLabel;
         } else if (typeof options.tabBarLabel === "function") {
@@ -68,6 +75,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({
             accessibilityLabel={options.tabBarAccessibilityLabel}
             testID={options.tabBarButtonTestID}
             onPress={onPress}
+            onLongPress={onLongPress}
             pressColor="white"
             style={styles.tabbarItem}
           >
