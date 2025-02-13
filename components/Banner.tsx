@@ -31,9 +31,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 10,
-    margin: 5,
     backgroundColor: "#97d2f0",
-    borderRadius: 15,
+    borderRadius: 10,
     // Menambahkan shadow di Android
     elevation: 6,
     // Menambahkan shadow di iOS

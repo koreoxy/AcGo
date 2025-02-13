@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import { Event } from "@/types";
 import { truncateWords } from "@/lib/truncatewords";
+import { Link } from "expo-router";
 
 export const defaultEventImage =
   "https://m.media-amazon.com/images/I/71ALEDbXA9L.jpg";
@@ -14,30 +15,32 @@ type EventListItemProps = {
 
 const EventListItem = ({ event }: EventListItemProps) => {
   return (
-    <View style={styles.card}>
-      <Image
-        source={{
-          uri: event.image || defaultEventImage,
-        }}
-        style={styles.image}
-      />
-      <View style={styles.contentText}>
-        <Text style={styles.title}>{event.title}</Text>
-        <Text style={styles.description}>
-          {truncateWords(event.description, 5)}
-        </Text>
-        <View>
-          <View style={styles.place}>
-            <FontAwesome name="map-marker" size={20} style={styles.text} />
-            <Text style={styles.text}>{event.city}</Text>
-          </View>
-          <View style={styles.date}>
-            <Fontisto name="date" size={18} style={styles.text} />
-            <Text style={styles.text}>{event.date}</Text>
+    <Link href={`/event/id`} asChild>
+      <Pressable style={styles.card}>
+        <Image
+          source={{
+            uri: event.image || defaultEventImage,
+          }}
+          style={styles.image}
+        />
+        <View style={styles.contentText}>
+          <Text style={styles.title}>{event.title}</Text>
+          <Text style={styles.description}>
+            {truncateWords(event.description, 5)}
+          </Text>
+          <View>
+            <View style={styles.place}>
+              <FontAwesome name="map-marker" size={20} style={styles.text} />
+              <Text style={styles.text}>{event.city}</Text>
+            </View>
+            <View style={styles.date}>
+              <Fontisto name="date" size={18} style={styles.text} />
+              <Text style={styles.text}>{event.date}</Text>
+            </View>
           </View>
         </View>
-      </View>
-    </View>
+      </Pressable>
+    </Link>
   );
 };
 

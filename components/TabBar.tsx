@@ -4,7 +4,6 @@ import { useLinkBuilder } from "@react-navigation/native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Text, PlatformPressable } from "@react-navigation/elements";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import Entypo from "@expo/vector-icons/Entypo";
 
 const TabBar: React.FC<BottomTabBarProps> = ({
   state,
@@ -12,19 +11,19 @@ const TabBar: React.FC<BottomTabBarProps> = ({
   navigation,
 }) => {
   const { buildHref } = useLinkBuilder();
-  const primaryColor = "#97d2f0";
+  const primaryColor = "#0388E6";
   const greyColor = "#737373";
 
   const icons: Record<string, (props: { color: string }) => JSX.Element> = {
     index: (props) => <AntDesign name="home" size={26} {...props} />,
+    create: (props) => <AntDesign name="pluscircle" size={26} {...props} />,
     profile: (props) => <AntDesign name="user" size={26} {...props} />,
-    ticket: (props) => <Entypo name="ticket" size={26} {...props} />,
   };
 
   const customLabels: Record<string, string> = {
     index: "Home",
+    create: "Create",
     profile: "Profile",
-    ticket: "Ticket",
   };
 
   return (
@@ -100,14 +99,14 @@ const TabBar: React.FC<BottomTabBarProps> = ({
 const styles = StyleSheet.create({
   tabbar: {
     position: "absolute",
-    bottom: 25,
+    bottom: 0,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "white",
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     paddingVertical: 15,
-    borderRadius: 25,
+    borderRadius: 15,
     shadowColor: "black",
     shadowOffset: { width: 0, height: 10 },
     shadowRadius: 10,

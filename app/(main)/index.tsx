@@ -4,11 +4,11 @@ import Banner from "@/components/Banner";
 import EventListItem from "@/components/EventListItem";
 import events from "@/assets/data/events";
 
-const Home = () => {
+const HomeScreen = () => {
   return (
     <View style={styles.container}>
-      <Banner />
-      <View style={{ marginVertical: 20 }}>
+      {/* <Banner /> */}
+      <View style={{ marginBottom: 80 }}>
         <FlatList
           data={events}
           renderItem={({ item }) => <EventListItem event={item} />}
@@ -18,6 +18,7 @@ const Home = () => {
             padding: 10,
           }}
           columnWrapperStyle={{ gap: 10, justifyContent: "center" }}
+          ListHeaderComponent={() => <Banner />}
         />
       </View>
     </View>
@@ -26,9 +27,9 @@ const Home = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
-    marginVertical: 20,
+    padding: 5,
+    // marginVertical: 20,
   },
 });
 
-export default Home;
+export default HomeScreen;
