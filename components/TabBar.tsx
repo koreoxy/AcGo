@@ -45,7 +45,8 @@ const TabBar: React.FC<BottomTabBarProps> = ({
           }) as string;
         }
 
-        if (["_sitemap", "+not-found"].includes(route.name)) return null;
+        if (["_sitemap", "+not-found", "[id]"].includes(route.name))
+          return null;
 
         const onPress = () => {
           const event = navigation.emit({

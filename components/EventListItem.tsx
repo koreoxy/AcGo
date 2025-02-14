@@ -15,7 +15,7 @@ type EventListItemProps = {
 
 const EventListItem = ({ event }: EventListItemProps) => {
   return (
-    <Link href={`/event/id`} asChild>
+    <Link href={`/id`} asChild>
       <Pressable style={styles.card}>
         <Image
           source={{
