@@ -2,23 +2,35 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Fontisto from "@expo/vector-icons/Fontisto";
-import Entypo from "@expo/vector-icons/Entypo";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { useLocalSearchParams } from "expo-router";
+import events from "@/assets/data/events";
+import { defaultEventImage } from "@/components/EventListItem";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Button from "@/components/Button";
 
 const EventDetailsScreen = () => {
+  const { id } = useLocalSearchParams();
+
+  const event = events.find((p) => p.id.toString() === id);
+
+  if (!event) {
+    return <Text>Data Event not found</Text>;
+  }
+
   return (
     <View style={styles.container}>
       <Image
         source={{
-          uri: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+          uri: event.image || defaultEventImage,
         }}
         style={styles.image}
       />
       <View style={styles.content}>
         <View style={styles.categoryContainer}>
           <View style={styles.category}>
-            <Entypo name="classic-computer" size={20} style={styles.text} />
-            <Text style={styles.text}>Tech</Text>
+            <MaterialIcons name="category" size={20} style={styles.text} />
+            <Text style={styles.text}>{event.category}</Text>
           </View>
 
           <View style={styles.category}>
@@ -27,27 +39,21 @@ const EventDetailsScreen = () => {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.title}>AI & Machine Learning Summit</Text>
-          <Text style={styles.description}>
-            AI & Machine Learning Summit Turnamen e-sports terbesar di Indonesia
-            dengan berbagai kompetisi game populer. sadsa 1 1casd asd asd sadsa
-            sd asdsad sa dasdsadasdsadsadsadsad1 1 asd sa dengan berbagai
-            kompetisi game populer. sadsa 1 1casd asd asd sadsa sd asdsad sa
-            dasdsadasdsadsadsadsad1 1 asd sa dengan berbagai kompetisi game
-            populer. sadsa 1 1casd asd asd sadsa sd asdsad sa
-            dasdsadasdsadsadsadsad1 1 asd sa
-          </Text>
+          <Text style={styles.title}>{event.title}</Text>
+          <Text style={styles.description}>{event.description}</Text>
         </View>
         <View style={styles.section}>
           <View style={styles.contentBot}>
             <FontAwesome name="map-marker" size={20} style={styles.text} />
-            <Text style={styles.text}>Istora Senayan, Jakarta, Indonesia</Text>
+            <Text style={styles.text}>{event.location}</Text>
           </View>
           <View style={styles.contentBot}>
             <Fontisto name="date" size={15} style={styles.text} />
-            <Text style={styles.text}>2025-09-30</Text>
+            <Text style={styles.text}>{event.date}</Text>
           </View>
         </View>
+
+        <Button text="Invite" backgroundColor="#0388E6" color="#fff" />
       </View>
     </View>
   );

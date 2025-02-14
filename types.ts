@@ -6,4 +6,5 @@ export type Event = {
   date: string;
   location: string;
   city: string;
+  category: string;
 };

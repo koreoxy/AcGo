@@ -7,13 +7,11 @@ const Banner = () => {
     <View style={styles.container}>
       <View style={styles.contentText}>
         <Text style={styles.text}>AcGo</Text>
-        <Text style={styles.textDesc}>
-          Buat Acara dan bagikan ke teman-teman kamu
-        </Text>
+        <Text style={styles.textDesc}>Buat Momen Berkesan, Ajak Temanmu!</Text>
 
         <Button
           text="Create Now"
-          // backgroundColor="#97d2f0"
+          width={100}
           onPress={() => console.log("s")}
         />
       </View>
