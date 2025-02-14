@@ -1,14 +1,15 @@
 import { View, Text, Image, StyleSheet } from "react-native";
 import React from "react";
 import Button from "./Button";
-import Colors from "@/constants/Colors";
 
 const Banner = () => {
   return (
     <View style={styles.container}>
       <View style={styles.contentText}>
         <Text style={styles.text}>AcGo</Text>
-        <Text style={styles.textDesc}>Buat Acara dan bagikan</Text>
+        <Text style={styles.textDesc}>
+          Buat Acara dan bagikan ke teman-teman kamu
+        </Text>
 
         <Button
           text="Create Now"
