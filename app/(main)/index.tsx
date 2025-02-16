@@ -1,34 +1,40 @@
-import { View, StyleSheet, FlatList } from "react-native";
 import React from "react";
+import { View, StyleSheet, ScrollView, Dimensions } from "react-native";
 import Banner from "@/components/Banner";
 import EventListItem from "@/components/EventListItem";
 import events from "@/assets/data/events";
 
+const { width, height } = Dimensions.get("window");
+
 const HomeScreen = () => {
   return (
-    <View style={styles.container}>
-      <View style={{ marginBottom: 80 }}>
-        <FlatList
-          data={events}
-          renderItem={({ item }) => <EventListItem event={item} />}
-          numColumns={2}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            gap: 10,
-            padding: 10,
-          }}
-          columnWrapperStyle={{ gap: 10, justifyContent: "center" }}
-          ListHeaderComponent={() => <Banner />}
-        />
+    <ScrollView
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.scrollContainer}
+    >
+      <Banner />
+      <View style={styles.grid}>
+        {events.map((item) => (
+          <EventListItem key={item.id} event={item} />
+        ))}
       </View>
-    </View>
+      <View style={{ height: height * 0.1 }} />
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 5,
+  scrollContainer: {
+    padding: width * 0.02,
+  },
+  grid: {
+    marginTop: 10,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 5,
+    justifyContent: "center",
+    marginHorizontal: -width * 0.01,
   },
 });
 

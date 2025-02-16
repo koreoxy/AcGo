@@ -1,10 +1,19 @@
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  Dimensions,
+} from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import { Event } from "@/types";
 import { truncateWords } from "@/lib/truncatewords";
 import { Link } from "expo-router";
+
+const { width } = Dimensions.get("window");
 
 export const defaultEventImage =
   "https://m.media-amazon.com/images/I/71ALEDbXA9L.jpg";
@@ -18,9 +27,7 @@ const EventListItem = ({ event }: EventListItemProps) => {
     <Link href={`/${event.id}`} asChild>
       <Pressable style={styles.card}>
         <Image
-          source={{
-            uri: event.image || defaultEventImage,
-          }}
+          source={{ uri: event.image || defaultEventImage }}
           style={styles.image}
         />
         <View style={styles.contentText}>
@@ -47,51 +54,56 @@ const EventListItem = ({ event }: EventListItemProps) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "white",
-    padding: 5,
-    borderRadius: 15,
+    padding: width * 0.02,
+    borderRadius: width * 0.04,
     maxWidth: "50%",
-    // Menambahkan shadow di Android
+    // Shadow untuk Android
     elevation: 6,
-    // Menambahkan shadow di iOS
+    // Shadow untuk iOS
     shadowColor: "#171717",
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: width * 0.01 },
     shadowOpacity: 0.2,
-    shadowRadius: 6,
+    shadowRadius: width * 0.04,
   },
   image: {
     width: "100%",
-    borderRadius: 15,
+    borderRadius: width * 0.04,
     aspectRatio: 2,
   },
   contentText: {
-    padding: 5,
+    padding: width * 0.02,
     flex: 1,
     justifyContent: "space-between",
   },
   title: {
     fontWeight: "bold",
+    fontSize: width * 0.04,
   },
   description: {
     color: "gray",
+    fontSize: width * 0.035,
   },
   place: {
     flexDirection: "row",
-    gap: 5,
+    gap: width * 0.01,
     backgroundColor: "#EDF2FE",
-    padding: 5,
-    marginVertical: 2,
-    borderRadius: 8,
+    padding: width * 0.01,
+    marginVertical: width * 0.005,
+    borderRadius: width * 0.02,
+    alignItems: "center",
   },
   date: {
     flexDirection: "row",
-    gap: 5,
+    gap: width * 0.01,
     backgroundColor: "#EDF2FE",
-    padding: 5,
-    marginVertical: 2,
-    borderRadius: 8,
+    padding: width * 0.01,
+    marginVertical: width * 0.005,
+    borderRadius: width * 0.02,
+    alignItems: "center",
   },
   text: {
     color: "#0388E6",
+    fontSize: width * 0.035,
   },
 });
 
