@@ -14,23 +14,108 @@ import DropdownComponent from "@/components/Dropdown";
 import Button from "@/components/Button";
 import { defaultEventImage } from "@/components/EventListItem";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import * as ImagePicker from "expo-image-picker";
 
 const { width, height } = Dimensions.get("window");
 
 const CreateScreen = () => {
+  // State untuk form input
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
+  const [image, setImage] = useState<string | null>(null);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState<string | null>(null);
+  const [location, setLocation] = useState("");
+  const [city, setCity] = useState<string>("");
+  const [error, setError] = useState("");
+
+  // Fungsi untuk mereset semua field
+  const resetFields = () => {
+    setTitle("");
+    setDescription("");
+    setCategory("");
+    setLocation("");
+    setCity("");
+    setDate(new Date());
+    setImage(null);
+  };
 
   const toggleDatePicker = () => {
     setShowPicker(true);
   };
 
+  // Fungsi onChange untuk DateTimePicker dengan tipe parameter yang sudah ditambahkan
   const onChange = (_event: unknown, selectedDate?: Date): void => {
     const currentDate = selectedDate || date;
     if (Platform.OS === "android") {
       setShowPicker(false);
     }
     setDate(currentDate);
+  };
+
+  // FUNCTION Image pick
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  // FUNCTION VALIDATE INPUT VALUES
+  const validateInput = (): boolean => {
+    setError("");
+    if (!title) {
+      setError("Title is required");
+      return false;
+    }
+    if (!description) {
+      setError("Description is required");
+      return false;
+    }
+    if (!category) {
+      setError("Category is required");
+      return false;
+    }
+    if (!location) {
+      setError("Location is required");
+      return false;
+    }
+    if (!city) {
+      setError("city is required");
+      return false;
+    }
+    if (!date) {
+      setError("date is required");
+      return false;
+    }
+
+    return true;
+  };
+
+  // FUNCTION SEND EVENT DATA TO DATABASE (CONTOH LOG)
+  const onCreate = () => {
+    if (!validateInput()) {
+      return;
+    }
+
+    console.log("Creating event:", {
+      title,
+      description,
+      category,
+      location,
+      city,
+      date,
+      image,
+    });
+
+    resetFields();
   };
 
   return (
@@ -40,17 +125,28 @@ const CreateScreen = () => {
       contentContainerStyle={styles.scrollView}
     >
       <View style={styles.container}>
+        <Text style={styles.heading}>Create</Text>
+
         {/* Upload Image */}
         <View style={styles.section}>
-          <Text style={styles.imageText}>Upload Image</Text>
-          <Image source={{ uri: defaultEventImage }} style={styles.image} />
-          <Text style={styles.buttonImage}>Select Image</Text>
+          <Image
+            source={{ uri: image || defaultEventImage }}
+            style={styles.image}
+          />
+          <Text style={styles.buttonImage} onPress={pickImage}>
+            Select Image
+          </Text>
         </View>
 
         {/* Title Input */}
         <View style={styles.section}>
           <Text style={styles.label}>Title</Text>
-          <TextInput placeholder="Expo Meeting..." style={styles.input} />
+          <TextInput
+            placeholder="Expo Meeting..."
+            style={styles.input}
+            value={title}
+            onChangeText={setTitle}
+          />
         </View>
 
         {/* Description Input */}
@@ -61,13 +157,18 @@ const CreateScreen = () => {
             numberOfLines={10}
             placeholder="Description"
             style={styles.textArea}
+            value={description}
+            onChangeText={setDescription}
           />
         </View>
 
         {/* Category Dropdown */}
         <View style={styles.section}>
           <Text style={styles.label}>Category</Text>
-          <DropdownComponent />
+          <DropdownComponent
+            value={category}
+            onChange={(item) => setCategory(item.value)}
+          />
         </View>
 
         {/* Location Input */}
@@ -76,13 +177,20 @@ const CreateScreen = () => {
           <TextInput
             placeholder="ICE BSD, Tangerang, Indonesia"
             style={styles.input}
+            value={location}
+            onChangeText={setLocation}
           />
         </View>
 
         {/* City Input */}
         <View style={styles.section}>
           <Text style={styles.label}>City</Text>
-          <TextInput placeholder="Tangerang" style={styles.input} />
+          <TextInput
+            placeholder="Tangerang"
+            style={styles.input}
+            value={city}
+            onChangeText={setCity}
+          />
         </View>
 
         {/* Date Picker */}
@@ -101,9 +209,17 @@ const CreateScreen = () => {
           )}
         </View>
 
+        {/* Error Message */}
+        {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
         {/* Create Button */}
         <View style={styles.section}>
-          <Button text="Create" backgroundColor="#0388E6" color="#fff" />
+          <Button
+            text="Create"
+            backgroundColor="#0388E6"
+            color="#fff"
+            onPress={onCreate}
+          />
         </View>
       </View>
     </ScrollView>
@@ -127,6 +243,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 6,
   },
+  heading: {
+    fontWeight: "bold",
+    fontSize: 20,
+    textAlign: "center",
+    padding: 5,
+  },
   section: {
     paddingHorizontal: width * 0.04,
     paddingVertical: height * 0.01,
@@ -137,12 +259,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: width * 0.04,
     color: "#0388E6",
-  },
-  imageText: {
-    textAlign: "center",
-    marginBottom: height * 0.005,
-    fontWeight: "500",
-    fontSize: width * 0.04,
+    marginTop: 5,
   },
   image: {
     width: "50%",
@@ -185,7 +302,13 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   dateText: {
-    color: "gray",
+    color: "black",
+  },
+  errorText: {
+    color: "red",
+    textAlign: "center",
+    fontSize: width * 0.04,
+    marginVertical: height * 0.01,
   },
 });
 

@@ -1,21 +1,29 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-const data = [
-  { label: "Item 1", value: "1" },
-  { label: "Item 2", value: "2" },
-  { label: "Item 3", value: "3" },
-  { label: "Item 4", value: "4" },
-  { label: "Item 5", value: "5" },
-  { label: "Item 6", value: "6" },
-  { label: "Item 7", value: "7" },
-  { label: "Item 8", value: "8" },
+type DropdownItem = {
+  label: string;
+  value: string;
+};
+
+type DropdownComponentProps = {
+  value: string | null;
+  onChange: (item: DropdownItem) => void;
+};
+
+const data: DropdownItem[] = [
+  { label: "Tech", value: "Tech" },
+  { label: "Conference", value: "Conference" },
+  { label: "Workshop", value: "Workshop" },
+  { label: "Party", value: "Party" },
 ];
 
-const DropdownComponent = () => {
-  const [value, setValue] = useState(null);
+const DropdownComponent: React.FC<DropdownComponentProps> = ({
+  value,
+  onChange,
+}) => {
   const [isFocus, setIsFocus] = useState(false);
 
   return (
@@ -37,7 +45,7 @@ const DropdownComponent = () => {
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={(item) => {
-          setValue(item.value);
+          onChange(item);
           setIsFocus(false);
         }}
         renderLeftIcon={() => (
@@ -68,15 +76,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 5,
-  },
-  label: {
-    position: "absolute",
-    backgroundColor: "white",
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
   },
   placeholderStyle: {
     fontSize: 16,
