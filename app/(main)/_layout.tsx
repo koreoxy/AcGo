@@ -22,6 +22,10 @@ const TabLayout = () => {
         name="profile"
         options={{ title: "Profile", headerShown: false }}
       />
+      <Tabs.Screen
+        name="myevent"
+        options={{ title: "My Event", headerShown: false }}
+      />
     </Tabs>
   );
 };

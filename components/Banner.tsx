@@ -12,6 +12,7 @@ const Banner = () => {
         <Button
           text="Create Now"
           width={100}
+          style={{ marginTop: 5 }}
           onPress={() => console.log("s")}
         />
       </View>

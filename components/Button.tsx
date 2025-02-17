@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
     padding: 5,
     alignItems: "center",
     borderRadius: 10,
-    marginVertical: 10,
     borderWidth: 1,
   },
   text: {

@@ -1,11 +1,23 @@
-import { View, Text, StyleSheet, Image } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  TouchableHighlight,
+} from "react-native";
+import React, { useState } from "react";
 import Button from "@/components/Button";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { Link } from "expo-router";
+
+const { width, height } = Dimensions.get("window");
 
 const ProfileScreen = () => {
+  const [count, setCount] = useState(0);
+  const onPress = () => setCount(count + 1);
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -22,20 +34,32 @@ const ProfileScreen = () => {
       <View style={styles.myEventContainer}>
         <Text style={styles.textContent}>Event</Text>
         <View style={styles.myEventContent}>
-          <View style={styles.content}>
-            <View style={styles.content1}>
-              <Ionicons name="calendar-outline" size={24} style={styles.icon} />
-              <Text style={styles.text}>My Event</Text>
-              <Text style={styles.count}>5</Text>
-            </View>
-            <View>
-              <Feather
-                name="arrow-right"
-                size={24}
-                style={{ color: "#7E7E7E" }}
-              />
-            </View>
-          </View>
+          <Link href="/myevent/" asChild>
+            <TouchableHighlight
+              onPress={onPress}
+              underlayColor="#dbd9d9"
+              style={styles.touchable}
+            >
+              <View style={styles.content}>
+                <View style={styles.content1}>
+                  <Ionicons
+                    name="calendar-outline"
+                    size={20}
+                    style={styles.icon}
+                  />
+                  <Text style={styles.text}>My Event</Text>
+                  <Text style={styles.count}>5</Text>
+                </View>
+                <View>
+                  <Feather
+                    name="arrow-right"
+                    size={20}
+                    style={{ color: "#7E7E7E" }}
+                  />
+                </View>
+              </View>
+            </TouchableHighlight>
+          </Link>
 
           {/* LINE */}
           <View
@@ -50,7 +74,7 @@ const ProfileScreen = () => {
             <View style={styles.content1}>
               <MaterialIcons
                 name="logout"
-                size={24}
+                size={20}
                 style={styles.iconLogout}
               />
               <Text style={styles.textLogout}>Logout</Text>
@@ -79,7 +103,6 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flexDirection: "column",
-    // justifyContent: "center",
     alignItems: "center",
     padding: 10,
   },
@@ -93,7 +116,7 @@ const styles = StyleSheet.create({
   },
   textName: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: width * 0.05,
     marginVertical: 2,
   },
   textEmail: {
@@ -112,6 +135,9 @@ const styles = StyleSheet.create({
     shadowColor: "#171717",
     shadowOpacity: 0.2,
     shadowRadius: 20,
+  },
+  touchable: {
+    borderRadius: 15,
   },
   content: {
     flexDirection: "row",
@@ -153,11 +179,11 @@ const styles = StyleSheet.create({
   textLogout: {
     color: "#F32013",
     fontWeight: "500",
-    fontSize: 16,
+    fontSize: width * 0.04,
   },
   text: {
     fontWeight: "500",
-    fontSize: 16,
+    fontSize: width * 0.04,
   },
   count: {
     padding: 5,
