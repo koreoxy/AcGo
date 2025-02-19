@@ -3,6 +3,8 @@ import { View, StyleSheet, ScrollView, Dimensions } from "react-native";
 import Banner from "@/components/Banner";
 import EventListItem from "@/components/EventListItem";
 import events from "@/assets/data/events";
+import Button from "@/components/Button";
+import { Link } from "expo-router";
 
 const { width, height } = Dimensions.get("window");
 
@@ -14,6 +16,9 @@ const HomeScreen = () => {
       contentContainerStyle={styles.scrollContainer}
     >
       <Banner />
+      <Link href="/login" asChild>
+        <Button text="Login" />
+      </Link>
       <View style={styles.grid}>
         {events.map((item) => (
           <EventListItem key={item.id} event={item} />
