@@ -15,6 +15,7 @@ import Button from "@/components/Button";
 import { defaultEventImage } from "@/components/EventListItem";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
+import { useLocalSearchParams } from "expo-router";
 
 const { width, height } = Dimensions.get("window");
 
@@ -25,10 +26,14 @@ const CreateScreen = () => {
   const [image, setImage] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState<string | null>(null);
+  // const [category, setCategory] = useState<string | null>(null);
+  const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
   const [city, setCity] = useState<string>("");
   const [error, setError] = useState("");
+
+  const { id } = useLocalSearchParams();
+  const isUpdating = !!id;
 
   // Fungsi untuk mereset semua field
   const resetFields = () => {
@@ -99,6 +104,27 @@ const CreateScreen = () => {
     return true;
   };
 
+  const onSubmit = () => {
+    if (isUpdating) {
+      onUpdate();
+    } else {
+      onCreate();
+    }
+  };
+
+  //FUNCTION SEND FOOD DATA TO DATABASE
+  const onUpdate = () => {
+    if (!validateInput()) {
+      return;
+    }
+
+    console.log("Updating prduct", title);
+
+    //TODO : SAVE IN THE DATABASE
+
+    resetFields();
+  };
+
   // FUNCTION SEND EVENT DATA TO DATABASE (CONTOH LOG)
   const onCreate = () => {
     if (!validateInput()) {
@@ -125,7 +151,9 @@ const CreateScreen = () => {
       contentContainerStyle={styles.scrollView}
     >
       <View style={styles.container}>
-        <Text style={styles.heading}>Create</Text>
+        <Text style={styles.heading}>
+          {isUpdating ? "Update Event" : "Create Event"}
+        </Text>
 
         {/* Upload Image */}
         <View style={styles.section}>
@@ -165,10 +193,16 @@ const CreateScreen = () => {
         {/* Category Dropdown */}
         <View style={styles.section}>
           <Text style={styles.label}>Category</Text>
-          <DropdownComponent
+          <TextInput
+            placeholder="Category"
+            style={styles.input}
+            value={category}
+            onChangeText={setCategory}
+          />
+          {/* <DropdownComponent
             value={category}
             onChange={(item) => setCategory(item.value)}
-          />
+          /> */}
         </View>
 
         {/* Location Input */}
@@ -215,10 +249,10 @@ const CreateScreen = () => {
         {/* Create Button */}
         <View style={styles.section}>
           <Button
-            text="Create"
+            text={isUpdating ? "Update" : "Create"}
             backgroundColor="#0388E6"
             color="#fff"
-            onPress={onCreate}
+            onPress={onSubmit}
           />
         </View>
       </View>
