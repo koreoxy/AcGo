@@ -6,18 +6,19 @@ import {
   Dimensions,
   TouchableHighlight,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import Button from "@/components/Button";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Link } from "expo-router";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/providers/AuthProvider";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const ProfileScreen = () => {
-  const [count, setCount] = useState(0);
-  const onPress = () => setCount(count + 1);
+  const { session } = useAuth();
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -27,8 +28,8 @@ const ProfileScreen = () => {
           }}
           style={styles.image}
         />
-        <Text style={styles.textName}>죽재 - Jukjae</Text>
-        <Text style={styles.textEmail}>Jukjae@gmail.com</Text>
+        {/* <Text style={styles.textName}>죽재 - Jukjae</Text> */}
+        <Text style={styles.textEmail}>{session?.user.email}</Text>
         <Button text="Edit profile" borderColor="#000" color="#000" />
       </View>
       <View style={styles.myEventContainer}>
@@ -36,7 +37,6 @@ const ProfileScreen = () => {
         <View style={styles.myEventContent}>
           <Link href="/myevent/" asChild>
             <TouchableHighlight
-              onPress={onPress}
               underlayColor="#dbd9d9"
               style={styles.touchable}
             >
@@ -70,16 +70,22 @@ const ProfileScreen = () => {
             }}
           />
 
-          <View style={styles.content}>
-            <View style={styles.content1}>
-              <MaterialIcons
-                name="logout"
-                size={20}
-                style={styles.iconLogout}
-              />
-              <Text style={styles.textLogout}>Logout</Text>
+          <TouchableHighlight
+            onPress={() => supabase.auth.signOut()}
+            underlayColor="#dbd9d9"
+            style={styles.touchable}
+          >
+            <View style={styles.content}>
+              <View style={styles.content1}>
+                <MaterialIcons
+                  name="logout"
+                  size={20}
+                  style={styles.iconLogout}
+                />
+                <Text style={styles.textLogout}>Logout</Text>
+              </View>
             </View>
-          </View>
+          </TouchableHighlight>
         </View>
       </View>
     </View>
