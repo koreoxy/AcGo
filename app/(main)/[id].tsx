@@ -1,21 +1,30 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, ActivityIndicator } from "react-native";
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useLocalSearchParams } from "expo-router";
-import events from "@/assets/data/events";
 import { defaultEventImage } from "@/components/EventListItem";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Button from "@/components/Button";
+import { useEvent } from "@/api/events";
+import dayjs from "dayjs";
 
 const EventDetailsScreen = () => {
-  const { id } = useLocalSearchParams();
+  const { id: idString } = useLocalSearchParams();
+  const id = parseFloat(typeof idString === "string" ? idString : idString[0]);
+  const { data: event, error, isLoading } = useEvent(id);
 
-  const event = events.find((p) => p.id.toString() === id);
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    return <Text>Failed to fetch events</Text>;
+  }
 
   if (!event) {
-    return <Text>Data Event not found</Text>;
+    return <Text>Event not found</Text>;
   }
 
   return (
@@ -49,7 +58,9 @@ const EventDetailsScreen = () => {
           </View>
           <View style={styles.contentBot}>
             <Fontisto name="date" size={15} style={styles.text} />
-            <Text style={styles.text}>{event.date}</Text>
+            <Text style={styles.text}>
+              {dayjs(event.created_at).format("D MMMM YYYY")}
+            </Text>
           </View>
         </View>
 
