@@ -1,14 +1,30 @@
 import React from "react";
-import { View, StyleSheet, ScrollView, Dimensions } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  ActivityIndicator,
+  Text,
+} from "react-native";
 import Banner from "@/components/Banner";
 import EventListItem from "@/components/EventListItem";
-import events from "@/assets/data/events";
-import Button from "@/components/Button";
-import { Link } from "expo-router";
+import { useEventList } from "@/api/events";
+import ButtonEvent from "@/components/ButtonEvent";
 
 const { width, height } = Dimensions.get("window");
 
 const HomeScreen = () => {
+  const { data: events, error, isLoading } = useEventList();
+
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    return <Text>Failed to fetch products</Text>;
+  }
+
   return (
     <ScrollView
       showsHorizontalScrollIndicator={false}
@@ -16,14 +32,15 @@ const HomeScreen = () => {
       contentContainerStyle={styles.scrollContainer}
     >
       <Banner />
-      <Link href="/login" asChild>
-        <Button text="Login" />
-      </Link>
-      <View style={styles.grid}>
-        {events.map((item) => (
-          <EventListItem key={item.id} event={item} />
-        ))}
-      </View>
+      {events && events.length > 0 ? (
+        <View style={styles.grid}>
+          {events.map((item) => (
+            <EventListItem key={item.id} event={item} />
+          ))}
+        </View>
+      ) : (
+        <ButtonEvent />
+      )}
       <View style={{ height: height * 0.1 }} />
     </ScrollView>
   );
@@ -38,7 +55,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 5,
-    justifyContent: "center",
     marginHorizontal: -width * 0.01,
   },
 });

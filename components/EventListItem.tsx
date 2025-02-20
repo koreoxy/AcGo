@@ -9,9 +9,10 @@ import {
 } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Fontisto from "@expo/vector-icons/Fontisto";
-import { Event } from "@/types";
+import { Tables } from "@/types";
 import { truncateWords } from "@/lib/truncatewords";
 import { Link } from "expo-router";
+import dayjs from "dayjs";
 
 const { width } = Dimensions.get("window");
 
@@ -19,7 +20,7 @@ export const defaultEventImage =
   "https://m.media-amazon.com/images/I/71ALEDbXA9L.jpg";
 
 type EventListItemProps = {
-  event: Event;
+  event: Tables<"events">;
 };
 
 const EventListItem = ({ event }: EventListItemProps) => {
@@ -42,7 +43,9 @@ const EventListItem = ({ event }: EventListItemProps) => {
             </View>
             <View style={styles.date}>
               <Fontisto name="date" size={18} style={styles.text} />
-              <Text style={styles.text}>{event.date}</Text>
+              <Text style={styles.text}>
+                {dayjs(event.created_at).format("D MMMM YYYY")}{" "}
+              </Text>
             </View>
           </View>
         </View>
