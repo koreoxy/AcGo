@@ -10,12 +10,12 @@ import {
   Pressable,
   Platform,
 } from "react-native";
-import DropdownComponent from "@/components/Dropdown";
 import Button from "@/components/Button";
 import { defaultEventImage } from "@/components/EventListItem";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from "expo-image-picker";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { userInsertEvent } from "@/api/events";
 
 const { width, height } = Dimensions.get("window");
 
@@ -34,6 +34,9 @@ const CreateScreen = () => {
 
   const { id } = useLocalSearchParams();
   const isUpdating = !!id;
+
+  const { mutate: insertEvent } = userInsertEvent();
+  const router = useRouter();
 
   // Fungsi untuk mereset semua field
   const resetFields = () => {
@@ -131,17 +134,15 @@ const CreateScreen = () => {
       return;
     }
 
-    console.log("Creating event:", {
-      title,
-      description,
-      category,
-      location,
-      city,
-      date,
-      image,
-    });
-
-    resetFields();
+    insertEvent(
+      { title, description, location, city, category, image },
+      {
+        onSuccess: () => {
+          resetFields();
+          router.back();
+        },
+      }
+    );
   };
 
   return (
